@@ -1,6 +1,10 @@
 Stackdriver Error Reporting transport for Winston logger
 ========================================================
 
+[![Build Status](https://travis-ci.org/findanyemail/winston-transport-stackdriver-error-reporting.svg?branch=master)](https://travis-ci.org/findanyemail/winston-transport-stackdriver-error-reporting "Build Status")
+[![Code Climate](https://codeclimate.com/github/findanyemail/winston-transport-stackdriver-error-reporting/badges/gpa.svg)](https://codeclimate.com/github/findanyemail/winston-transport-stackdriver-error-reporting "Code Climate")
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/findanyemail/winston-transport-stackdriver-error-reporting/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/findanyemail/winston-transport-stackdriver-error-reporting/?branch=master "Scrutinizer Code Quality")
+
 
 Overview
 --------
@@ -27,7 +31,8 @@ This transport supports 100% same configuration options as [@google/cloud-errors
 The only additional option is `options.level` that controls minimal log entry level that should be sent to Stackdriver.
 
 
-### How it works
+How it works
+------------
 
 When log entry reaches this transport, it will search `meta` object of log entry for objects that looks like errors
 (with `message` and `stack` properties defined).

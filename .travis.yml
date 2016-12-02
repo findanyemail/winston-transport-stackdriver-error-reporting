@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - node
+  - 6
+  - 5
+  - 4
+cache:
+  yarn: true
+script:
+  - yarn run build
+  - yarn run test
+deploy:
+  provider: npm
+  api_key:
+    secure: cmjOhFAOy7q9PmdZ0CoVKr3rm0D4P4cjMGi+BshUKjfk5WmzKHUzCDF+nvzD2VF7BBzaJDPoL/FL9s1JUU7B1noH3no9mc9jj4fiS9tbvEmtqnQbWDp/l8QRExtNrsxHPnS/TLRfWsX0jzFm6+Xmlf1u0NWHfp3mPUfY1NyBdYVsWLmx4T8lSuUVF3g7yve5WWalXyFhJmdzigb5XwvLz3yeQmNqyk7N66TlIwQVFjSi65r0RqQrql/W2QT+HO0QyTejzSE2pxRqQUGvAx60Y/yg50ZfBmCxO3jL8FZ2V/rJBRK9LA7wQzQiO34Lhib+7EDL1N5tmMwhQkWQhYV5jexl7mWor5T+jGRP3x8KayqHcFB3giyLM0zpTNwMNQWjyNyuTZYChUK+zNsCqY8Idrz/DhlusmtOsYXpB6gVuqa9+eosI0Ex6Yaj929Ij6rOKUx/mmV9/Azw8KRsTaQMzvwGh1PwV/N07HnbXjzy8hdiQxvZtKeawnF4FhOVtvZ2WbmfegjuNvS9GIy7qhnYBTjeiOIakFC2v52oXbtot33KGJDrj7PBFE2ZQ2mfnCiFKtbck6iZg0nY9Jxjt2JM+wNnEiFX+P/bYqZefiTnaoKVV09Aw0Q/lAJ5sgLXWrTvQeu7GPH/HtyL2Ew3Rryww9V3c/xIEIPPqpfUn8P0P7s=
+  on:
+    tags: true
