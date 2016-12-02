@@ -4,7 +4,7 @@ Stackdriver Error Reporting transport for Winston logger
 [![Build Status](https://travis-ci.org/findanyemail/winston-transport-stackdriver-error-reporting.svg?branch=master)](https://travis-ci.org/findanyemail/winston-transport-stackdriver-error-reporting "Build Status")
 [![Code Climate](https://codeclimate.com/github/findanyemail/winston-transport-stackdriver-error-reporting/badges/gpa.svg)](https://codeclimate.com/github/findanyemail/winston-transport-stackdriver-error-reporting "Code Climate")
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/findanyemail/winston-transport-stackdriver-error-reporting/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/findanyemail/winston-transport-stackdriver-error-reporting/?branch=master "Scrutinizer Code Quality")
-
+[![NPM Version](https://img.shields.io/npm/v/@findanyemail/winston-transport-stackdriver-error-reporting.svg)](https://www.npmjs.com/package/@findanyemail/winston-transport-stackdriver-error-reporting "NPM Version")
 
 Overview
 --------
