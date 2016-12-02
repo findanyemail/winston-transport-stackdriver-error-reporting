@@ -4,14 +4,21 @@ node_js:
   - 6
   - 5
   - 4
+
 cache:
   yarn: true
+
 script:
   - yarn run build
   - yarn run test
+
+before_deploy: npm version --no-git-tag-version $TRAVIS_TAG
 deploy:
   provider: npm
+  email:
+    secure: Z9KvU9FYlWziLhTgLAQBCqwANGSMw6ori0Klh9Q5oSidUwMeJ4iKxvvNuUrN1v1X1v/FSEwHOZGZcdOMyCU7l+V8bLLody8XZwG/bNyGkF7R7+n4oENrC8Kt5puHq7gQ4KgL0Y2vQOYL1kSH0S7aUZGMlkkwvekrkSqIBVaQcpJ4IaBjrY0Ylde692AopenXWlysiacBXdCp8U1kpbqdkuU5y9M00N85TqEiTdV1dIbaOrk0MqKcXS+CEH5WfEMELVQgj1k4cTTXuQBpR05u1wP/gtwjUy30pgOf1pu6bWKJogHFXJE7+2/ab9GA4h/VX34Tfx8pbJGzJhU8kd7WBUVu/q8dayustxyJBqTo8U9sB0cAheJq1yrBfVu/zsmCWieh2swy67XXpxO6AR58OsNYUS0pMkiYifxdpf5unJ3cZdqbvbEd7SbJPjr4RbXfvMblw6o4JXozQOXyLykDCU1JbgLXHV0M52vcPDVRi88QbEsgyL3bgubr9J3C1MI3gWeVc66B3SKYbQL+robg0haeBOml9PMewIAANBip8WFijJamAUkVwOl1ezGAy6I26VXRr/eJUmHwQm6OR7RNiiRVOovOOIiiWoCZky+O8tqDm/mignRB9lPChE4YV/AroiYZUzLKxWRgOInZXDvnWPp8eRECYaKqc4gql5rlP7A=
   api_key:
     secure: cmjOhFAOy7q9PmdZ0CoVKr3rm0D4P4cjMGi+BshUKjfk5WmzKHUzCDF+nvzD2VF7BBzaJDPoL/FL9s1JUU7B1noH3no9mc9jj4fiS9tbvEmtqnQbWDp/l8QRExtNrsxHPnS/TLRfWsX0jzFm6+Xmlf1u0NWHfp3mPUfY1NyBdYVsWLmx4T8lSuUVF3g7yve5WWalXyFhJmdzigb5XwvLz3yeQmNqyk7N66TlIwQVFjSi65r0RqQrql/W2QT+HO0QyTejzSE2pxRqQUGvAx60Y/yg50ZfBmCxO3jL8FZ2V/rJBRK9LA7wQzQiO34Lhib+7EDL1N5tmMwhQkWQhYV5jexl7mWor5T+jGRP3x8KayqHcFB3giyLM0zpTNwMNQWjyNyuTZYChUK+zNsCqY8Idrz/DhlusmtOsYXpB6gVuqa9+eosI0Ex6Yaj929Ij6rOKUx/mmV9/Azw8KRsTaQMzvwGh1PwV/N07HnbXjzy8hdiQxvZtKeawnF4FhOVtvZ2WbmfegjuNvS9GIy7qhnYBTjeiOIakFC2v52oXbtot33KGJDrj7PBFE2ZQ2mfnCiFKtbck6iZg0nY9Jxjt2JM+wNnEiFX+P/bYqZefiTnaoKVV09Aw0Q/lAJ5sgLXWrTvQeu7GPH/HtyL2Ew3Rryww9V3c/xIEIPPqpfUn8P0P7s=
   on:
     tags: true
+    node: node
