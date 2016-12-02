@@ -1,0 +1,8 @@
+# IDE files and folders
+.idea/
+
+# Project dependencies
+node_modules/
+
+# Source code
+src/
