@@ -40,21 +40,24 @@ class StackdriverErrorReporting extends Transport {
   log(level, message, meta, callback) {
 
     const promises = [];
-    const errors = this.extractErrorsFromMeta(meta);
 
-    errors.forEach((error) => {
-      promises.push(
-        new Promise((resolve, reject) => {
-          this._client.report(error, meta.request, error.stack, (reportError) => {
-            if (reportError) {
-              console.log('Failed to send error to Stackdriver Error Reporting.', reportError);
-              return reject(reportError);
-            }
-            return resolve();
+    if (meta) {
+      const errors = this.extractErrorsFromMeta(meta);
+      errors.forEach((error) => {
+        const stackTrace = Array.isArray(error.stack) ? error.stack.join("\n") : error.stack;
+        promises.push(
+          new Promise((resolve, reject) => {
+            this._client.report(error, meta.request, stackTrace, (reportError) => {
+              if (reportError) {
+                console.log('Failed to send error to Stackdriver Error Reporting.', reportError);
+                return reject(reportError);
+              }
+              return resolve();
+            })
           })
-        })
-      );
-    });
+        );
+      });
+    }
 
     Promise.all(promises)
       .then(() => callback(null, true))
@@ -72,7 +75,7 @@ class StackdriverErrorReporting extends Transport {
     const errors = [];
 
     if (isPlainObject(data)) {
-      if (data.message && data.stack) {
+      if (data.stack) {
         errors.push(data);
       } else {
         forOwn(data, (value) => {
