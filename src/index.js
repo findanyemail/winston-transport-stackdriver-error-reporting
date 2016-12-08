@@ -19,14 +19,21 @@ class StackdriverErrorReporting extends Transport {
 
     this.name = 'StackdriverErrorReporting';
     this.level = options.level || 'error';
+    this.mode = options.mode.toLowerCase() || 'api';
+    this.serviceContext = options.serviceContext || {service: 'unknown', version: 'unknown'};
+    if (this.mode !== 'console' && this.mode !== 'api') {
+      throw new Error('StackdriverErrorReporting: parameter "mode" is expected to be "console" or "api".');
+    }
 
-    // NODE_ENV hack is required until
-    // https://github.com/GoogleCloudPlatform/cloud-errors-nodejs/issues/79
-    // will be resolved
-    const previousNodeEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = 'production';
-    this._client = errorReporter.start(options);
-    process.env.NODE_ENV = previousNodeEnv;
+    if (this.mode === 'api') {
+      // NODE_ENV hack is required until
+      // https://github.com/GoogleCloudPlatform/cloud-errors-nodejs/issues/79
+      // will be resolved
+      const previousNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'production';
+      this._client = errorReporter.start(options);
+      process.env.NODE_ENV = previousNodeEnv;
+    }
   }
 
   /**
@@ -39,29 +46,80 @@ class StackdriverErrorReporting extends Transport {
    */
   log(level, message, meta, callback) {
 
-    const promises = [];
+    const promise = (this.mode === 'api')
+      ? this.logApi(level, message, meta)
+      : this.logConsole(level, message, meta);
 
-    if (meta) {
-      const errors = this.extractErrorsFromMeta(meta);
-      errors.forEach((error) => {
-        const stackTrace = Array.isArray(error.stack) ? error.stack.join("\n") : error.stack;
-        promises.push(
-          new Promise((resolve, reject) => {
-            this._client.report(error, meta.request, stackTrace, (reportError) => {
-              if (reportError) {
-                console.log('Failed to send error to Stackdriver Error Reporting.', reportError);
-                return reject(reportError);
-              }
-              return resolve();
-            })
-          })
-        );
-      });
-    }
-
-    Promise.all(promises)
+    promise
       .then(() => callback(null, true))
       .catch((error) => callback(error, false));
+  }
+
+  /**
+   * Send entry to Stackdriver Error Reporting with a help of console.log().
+   *
+   * @param {String} level - Winston log entry level.
+   * @param {String} message - Log entry message.
+   * @param {Object} meta - Winston meta information.
+   * @return {Promise}
+   */
+  logConsole(level, message, meta) {
+
+    const eventTime = (new Date()).toISOString();
+    const errors = this.extractErrorsFromMeta(meta);
+    errors.forEach((error) => {
+
+      const stackTrace = Array.isArray(error.stack) ? error.stack.join("\n") : error.stack;
+      const message = JSON.stringify({
+        eventTime,
+        message: stackTrace,
+        severity: level.toUpperCase(),
+        serviceContext: this.serviceContext,
+      });
+      if (meta.context) {
+        message.context = meta.context;
+      }
+
+      console.log(message);
+    });
+
+    return Promise.resolve();
+  }
+
+  /**
+   * Send entry to Stackdriver Error Reporting with a help of API.
+   *
+   * @param {String} level - Winston log entry level.
+   * @param {String} message - Log entry message.
+   * @param {Object} meta - Winston meta information.
+   * @return {Promise}
+   */
+  logApi(level, message, meta) {
+
+    const promises = [];
+
+    const errors = this.extractErrorsFromMeta(meta);
+    errors.forEach((error) => {
+
+      const stackTrace = Array.isArray(error.stack) ? error.stack.join("\n") : error.stack;
+      promises.push(
+        new Promise((resolve, reject) => {
+          let request = null;
+          if (meta.context && meta.context.httpRequest) {
+            request = meta.context.httpRequest;
+          }
+          this._client.report(error, request, stackTrace, (reportError) => {
+            if (reportError) {
+              console.log('Failed to send error to Stackdriver Error Reporting.', reportError);
+              return reject(reportError);
+            }
+            return resolve();
+          })
+        })
+      );
+    });
+
+    return Promise.all(promises);
   }
 
   /**
