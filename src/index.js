@@ -130,19 +130,17 @@ class StackdriverErrorReporting extends Transport {
    */
   extractErrorsFromMeta(data) {
 
-    const errors = [];
+    let errors = [];
 
-    if (isPlainObject(data)) {
-      if (data.stack) {
-        errors.push(data);
-      } else {
-        forOwn(data, (value) => {
-          errors.concat(this.extractErrorsFromMeta(value));
-        });
-      }
+    if (data.stack) {
+      errors.push(data);
+    } else if (isPlainObject(data)) {
+      forOwn(data, (value) => {
+        errors = errors.concat(this.extractErrorsFromMeta(value));
+      });
     } else if (Array.isArray(data)) {
       data.forEach((value) => {
-        errors.concat(this.extractErrorsFromMeta(value));
+        errors = errors.concat(this.extractErrorsFromMeta(value));
       });
     }
 
