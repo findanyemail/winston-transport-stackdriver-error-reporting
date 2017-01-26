@@ -26,13 +26,9 @@ class StackdriverErrorReporting extends Transport {
     }
 
     if (this.mode === 'api') {
-      // NODE_ENV hack is required until
-      // https://github.com/GoogleCloudPlatform/cloud-errors-nodejs/issues/79
-      // will be resolved
-      const previousNodeEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'production';
-      this._client = errorReporter.start(options);
-      process.env.NODE_ENV = previousNodeEnv;
+      this._client = errorReporter.start(Object.assign({}, options, {
+        ignoreEnvironmentCheck: true,
+      }));
     }
   }
 
