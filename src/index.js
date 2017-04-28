@@ -125,6 +125,9 @@ class StackdriverErrorReporting extends Transport {
    * @return {Array}
    */
   extractErrorsFromMeta(data) {
+    if (!data) {
+      return [];
+    }
 
     let errors = [];
 
