@@ -1,6 +1,6 @@
 import forOwn from 'for-own'
 import isPlainObject from 'is-plain-object'
-import errorReporter from '@google/cloud-errors'
+import errorReporter from '@google-cloud/error-reporting'
 import {Transport} from 'winston/lib/winston/transports/transport'
 
 /**
@@ -26,7 +26,7 @@ class StackdriverErrorReporting extends Transport {
     }
 
     if (this.mode === 'api') {
-      this._client = errorReporter.start(Object.assign({}, options, {
+      this._client = errorReporter(Object.assign({}, options, {
         ignoreEnvironmentCheck: true,
       }));
     }
