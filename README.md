@@ -73,5 +73,5 @@ Official package [@google-cloud/logging-winston] exists now, a winston transport
 [Winston]: <https://github.com/winstonjs/winston>
 [Google Container Engine]: <https://cloud.google.com/container-engine/>
 [Stackdriver Error Reporting]: <https://cloud.google.com/error-reporting/>
-[@google/cloud-errors]: <https://www.npmjs.com/package/@google-cloud/error-reporting>
+[@google-cloud/error-reporting]: <https://www.npmjs.com/package/@google-cloud/error-reporting>
 [@google-cloud/logging-winston]: <https://www.npmjs.com/package/@google-cloud/logging-winston>
