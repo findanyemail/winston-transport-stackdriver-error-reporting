@@ -14,7 +14,7 @@ This package is [Winston] logger transport that sends errors to [Stackdriver Err
 It's able to work in two modes:
 
 1. Logging to stdout compatible with [Google Container Engine];
-2. Logging via an API with a help of [@google/cloud-errors] library.
+2. Logging via an API with a help of [@google-cloud/error-reporting] library.
 
 
 
@@ -31,7 +31,7 @@ Simply add this to your Winston transports array:
     });
 ```
 
-This transport supports 100% same configuration options as [@google/cloud-errors] library, and uses API transport by default.
+This transport supports 100% same configuration options as [@google-cloud/error-reporting] library, and uses API transport by default.
 The only additional option is `options.level` that controls minimal log entry level that should be sent to Stackdriver.
 
 If you want to use stdout logging mode, all you need is to switch mode and set your `serviceContext`:
@@ -62,9 +62,16 @@ If `meta.context` property is defined, it will be attached to error as it's cont
 Please see [Stackdriver Error Reporting documentation](https://cloud.google.com/error-reporting/docs/formatting-error-messages) for details.
 
 
+Alternatives
+------------
+
+Official package [@google-cloud/logging-winston] exists now, a winston transport for Stackdriver Logging, which can automatically report logged errors to Error Reporting.
+
+
 [//]: # (These are reference links used in the body of this document)
 
 [Winston]: <https://github.com/winstonjs/winston>
 [Google Container Engine]: <https://cloud.google.com/container-engine/>
 [Stackdriver Error Reporting]: <https://cloud.google.com/error-reporting/>
-[@google/cloud-errors]: <https://github.com/GoogleCloudPlatform/cloud-errors-nodejs>
+[@google/cloud-errors]: <https://www.npmjs.com/package/@google-cloud/error-reporting>
+[@google-cloud/logging-winston]: <https://www.npmjs.com/package/@google-cloud/logging-winston>
